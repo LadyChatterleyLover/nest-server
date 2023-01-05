@@ -1,12 +1,18 @@
 import { Global, Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { UserSchema } from './schema/user.schema'
+import { FileSchema } from './schema/file.schema'
 
 const MONGO_MODELS = MongooseModule.forFeature([
   {
     name: 'USER_MODEL',
     schema: UserSchema,
     collection: 'user',
+  },
+  {
+    name: 'FILE_MODEL',
+    schema: FileSchema,
+    collection: 'file',
   },
 ])
 

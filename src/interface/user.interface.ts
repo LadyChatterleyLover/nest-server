@@ -18,10 +18,20 @@ export class User extends Document {
   })
   readonly password: string
 
-  @Prop()
-  @ApiProperty({
-    description: '手机号',
-    example: '18100000000',
-  })
   readonly phone: string
+
+  @Prop({ default: Date.now() })
+  @ApiProperty({
+    description: '创建时间',
+    example: Date.now(),
+  })
+  readonly create_time: string
+
+  @Prop({ default: Date.now() })
+  @ApiProperty({
+    description: '修改时间',
+    example: Date.now(),
+  })
+
+  readonly update_time: string
 }

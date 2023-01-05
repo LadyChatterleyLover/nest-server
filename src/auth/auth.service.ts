@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { User } from '../interface/user.interface'
+import { checkPassword } from 'src/utils/cryptogram'
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,8 @@ export class AuthService {
   async validateUser(username: string, password: string) {
     const user = await this.userModel.findOne({ username })
     const userPassword = user.password
-    if (userPassword === password) {
+    const checked = await checkPassword(password, userPassword)
+    if (checked) {
       if (user) {
         return {
           code: 1,
@@ -35,16 +37,19 @@ export class AuthService {
     }
   }
 
-  async certificate(user: User) {
+  async certificate(user: User): Promise<any> {
     const payload = {
       username: user.username,
     }
     try {
       const token = this.jwtService.sign(payload)
+      const res = JSON.parse(JSON.stringify(user))
+      delete res.password
       return {
         code: 200,
         data: {
           token,
+          user: res
         },
         msg: `登录成功`,
       }

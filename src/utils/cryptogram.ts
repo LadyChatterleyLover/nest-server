@@ -1,24 +1,17 @@
 import * as crypto from 'crypto'
 
-/**
- * Make salt
- */
-export function makeSalt(): string {
-  return crypto.randomBytes(3).toString('base64')
+const secret = 'abcdefg123456789'
+
+// 加密
+export async function createPassword(password) {
+  const hmac = crypto.createHash('sha256', secret as any)
+  hmac.update(password)
+  return hmac.digest('hex')
 }
 
-/**
- * Encrypt password
- * @param password 密码
- * @param salt 密码盐
- */
-export function encryptPassword(password: string, salt: string): string {
-  if (!password || !salt) {
-    return ''
-  }
-  const tempSalt = Buffer.from(salt, 'base64')
-  return (
-    // 10000 代表迭代次数 16代表长度
-    crypto.pbkdf2Sync(password, tempSalt, 10000, 16, 'sha1').toString('base64')
-  )
+// 验证密码
+export async function checkPassword(password, hash_password) {
+  // 先对需要验证的密码进行加密
+  password = await createPassword(password)
+  return password === hash_password
 }

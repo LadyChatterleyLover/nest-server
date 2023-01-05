@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { AuthService } from 'src/auth/auth.service'
-import { User } from '../interface/user.interface'
+import { User } from '../../interface/user.interface'
 import { UserService } from './user.service'
 
 @Controller('user')
@@ -16,8 +16,8 @@ export class UserController {
   @ApiOperation({
     summary: '用户注册',
   })
-  async registerUser(@Body() userDto: User) {
-    return await this.userService.register(userDto)
+  async registerUser(@Body() user: User) {
+    return await this.userService.register(user)
   }
 
   @ApiOperation({

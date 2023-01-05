@@ -8,7 +8,7 @@ import {
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const response = ctx.getResponse()
     const request = ctx.getRequest()
@@ -26,7 +26,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       response.status(status).json({
         statusCode: status,
         timestamp: new Date().getTime(),
-        message: exception['message'],
+        message: exception.message,
         method: request.method,
         path: request.url,
       })

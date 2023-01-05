@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { User } from '../interface/user.interface'
+import { User } from '../../interface/user.interface'
+import { createPassword } from 'src/utils/cryptogram'
 
 @Injectable()
 export class UserService {
@@ -23,7 +24,11 @@ export class UserService {
       }
     } else {
       try {
-        const createUser = new this.userModel(user)
+        const p = await createPassword(user.password)
+        const createUser = new this.userModel({
+          username: user.username,
+          password: p
+        })
         await createUser.save()
         return {
           code: 200,
