@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { ContextType, Injectable } from '@nestjs/common'
 import { File, UploadFile } from '../../interface/file.interface'
 import * as OSS from 'ali-oss'
 import { Readable } from 'node:stream'
@@ -14,7 +14,12 @@ export class FileService {
   ) {
     this.client = new OSS(client)
   }
-  async upload(name: string, stream: Readable, file: UploadFile) {
+  async upload(
+    name: string,
+    stream: Readable,
+    file: UploadFile,
+    user_id: string,
+  ) {
     const size = file.size
     const ext = file.mimetype.split('/')[1]
     const url = await this.uploadFile(name, stream)
@@ -23,6 +28,7 @@ export class FileService {
       size,
       ext,
       url,
+      user_id,
     })
     if (res) {
       return {

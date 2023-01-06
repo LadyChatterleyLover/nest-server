@@ -38,18 +38,15 @@ export class AuthService {
   }
 
   async certificate(user: User): Promise<any> {
-    const payload = {
-      username: user.username,
-    }
     try {
-      const token = this.jwtService.sign(payload)
       const res = JSON.parse(JSON.stringify(user))
       delete res.password
+      const token = this.jwtService.sign(res)
       return {
         code: 200,
         data: {
           token,
-          user: res
+          user: res,
         },
         msg: `登录成功`,
       }

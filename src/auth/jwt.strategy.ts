@@ -1,3 +1,4 @@
+import { User } from './../interface/user.interface'
 // src/logical/auth/jwt.strategy.ts
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { PassportStrategy } from '@nestjs/passport'
@@ -14,9 +15,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  async validate(payload: any) {
+  async validate(payload: User) {
     return {
       username: payload.username,
+      user_id: payload._id,
     }
   }
 }

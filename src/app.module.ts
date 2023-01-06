@@ -7,7 +7,6 @@ import { AuthModule } from './auth/auth.module'
 import { AuthService } from './auth/auth.service'
 import { UserController } from './modules/user/user.controller'
 import { FileModule } from './modules/file/file.module'
-import { FileController } from './modules/file/file.controller'
 
 @Module({
   imports: [DbModule, AuthModule, FileModule, UserModule],

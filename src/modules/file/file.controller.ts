@@ -4,6 +4,7 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
+  Req,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { FileService } from './file.service'
@@ -38,9 +39,9 @@ export class FileController {
   @ApiOperation({
     summary: '文件上传',
   })
-  async upload(@UploadedFile() file: UploadFile) {
+  async upload(@UploadedFile() file: UploadFile, @Req() req) {
     const name = file.originalname
     const stream = bufferToStream(file.buffer)
-    return this.fileService.upload(name, stream, file)
+    return this.fileService.upload(name, stream, file, req.user.user_id)
   }
 }
