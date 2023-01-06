@@ -4,6 +4,7 @@ import * as OSS from 'ali-oss'
 import { Readable } from 'node:stream'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
+import client from '../../config/oss'
 
 @Injectable()
 export class FileService {
@@ -11,12 +12,7 @@ export class FileService {
   constructor(
     @InjectModel('FILE_MODEL') private readonly fileModel: Model<File>,
   ) {
-    this.client = new OSS({
-      region: 'oss-cn-chengdu',
-      accessKeyId: 'LTAIX30SSLbiVE9J',
-      accessKeySecret: 'ZIcnc8kgZKpa6nkOuaEaKFKmLj8W1g',
-      bucket: 'lp-disk',
-    })
+    this.client = new OSS(client)
   }
   async upload(name: string, stream: Readable, file: UploadFile) {
     const size = file.size
@@ -32,7 +28,7 @@ export class FileService {
       return {
         code: 200,
         msg: '上传成功',
-        data: res
+        data: res,
       }
     } else {
       return {
